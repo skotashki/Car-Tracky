@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+.single-car {
+  width: 100%;
+  font-family: sans-serif;
+  padding: 15px;
+  box-shadow: 0 0 10px #999;
+  float: left;
+}
+
+.single-car img {
+  width: 350px;
+  float: right;
+  margin: 0;
+}
+
+.single-car h2 {
+  font-size: 16px;
+}
+
+@media (max-width: 767px) {
+  .single-car {
+    width: 100%;
+  }
+}
