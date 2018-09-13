@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Your car</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 	<style type="text/css">
+		* { padding:0; margin:0; }
+		
+		body{
+			font-family: 'Montserrat', sans-serif;
+			/*font-size:18px;*/
+			/*background-color:#CCC;*/
+		}
+
 		.car-image {
 			width: 80%;
 			margin: 0 auto;
@@ -21,7 +32,26 @@
 			font-size: 3em;
 			text-align: center;
 		}
+
+		.float{
+			position:fixed;
+			width:70px;
+			height:70px;
+			bottom:40px;
+			right:40px;
+			background-color:#0C9;
+			color:#FFF;
+			border-radius:50px;
+			text-align:center;
+			box-shadow: 2px 2px 3px #999;
+		}
+
+		.my-float {
+			margin-top:22px;
+		}
 	</style>
+
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <body>
 	<div class="container">
@@ -42,28 +72,32 @@
 
 		<div class="row">
 			 <table class="table">
-    <thead>
-      <tr>
-        <th>Previous owner</th>
-        <th>Mileage</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Ivan</td>
-        <td>30 000</td>
-      </tr>
-      <tr>
-        <td>Simeon</td>
-        <td>20 000</td>
-      </tr>
-      <tr>
-        <td>George</td>
-        <td>50 000</td>
-      </tr>
-    </tbody>
-  </table>
+			    <thead>
+			      <tr>
+			        <th>Previous owner</th>
+			        <th>Mileage</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr>
+			        <td>Ivan</td>
+			        <td>30 000</td>
+			      </tr>
+			      <tr>
+			        <td>Simeon</td>
+			        <td>20 000</td>
+			      </tr>
+			      <tr>
+			        <td>George</td>
+			        <td>50 000</td>
+			      </tr>
+    			</tbody>
+  			</table>
 		</div>
 	</div>
+
+	<a href="#" class="float">
+		<i class="fas fa-dollar-sign fa-2x my-float"></i>
+	</a>
 </body>
 </html>
