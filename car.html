@@ -9,10 +9,10 @@
 
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
 
+	<link rel="stylesheet" type="text/css" href="libraries/vuejs-dialog.min.css">
 	<link type="text/css" href="css/car-styles.css" rel="stylesheet">
-
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <body>
 	<div class="container">
@@ -27,15 +27,15 @@
 	  <!-- Wrapper for slides -->
 	  <div class="carousel-inner">
 	    <div class="item active">
-	      <img src="images/tesla-red.png" alt="Los Angeles">
+	      <img src="images/tesla-red.png">
 	    </div>
 
 	    <div class="item">
-	      <img src="images/tesla-red.png" alt="Chicago">
+	      <img src="images/tesla-red.png">
 	    </div>
 
 	    <div class="item">
-	      <img src="images/tesla-red.png" alt="New York">
+	      <img src="images/tesla-red.png">
 	    </div>
 	  </div>
 	  
@@ -63,23 +63,27 @@
 		</div>
 
 		<div class="row">
-			 <table class="table">
+			 <table class="table table-bordered">
 			    <thead>
 			      <tr>
+			      	<th>#</th>
 			        <th>Previous owner</th>
 			        <th>Mileage</th>
 			      </tr>
 			    </thead>
 			    <tbody>
 			      <tr>
+			      	<td>1</td>
 			        <td>Ivan</td>
 			        <td>30 000</td>
 			      </tr>
 			      <tr>
+			      	<td>2</td>
 			        <td>Simeon</td>
 			        <td>20 000</td>
 			      </tr>
 			      <tr>
+			      	<td>3</td>
 			        <td>George</td>
 			        <td>50 000</td>
 			      </tr>
@@ -88,17 +92,20 @@
 		</div>
 	</div>
 
-	<a href="#" class="float">
+	<a href="#" v-confirm="{ok: makeAdmin, cancel: doNothing, message: 'User will be given admin privileges. Make user an Admin?'}"" class="float">
 		<i class="fas fa-dollar-sign fa-2x my-float"></i>
 	</a>
 
-	<script
+	 <script
   src="https://code.jquery.com/jquery-3.3.1.js"
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
 
   	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+	<script type="text/javascript" src="libraries/vuejs-dialog.min.js"></script>
+	<script type="text/javascript" src="libraries/vuejs-dialog-mixin.min.js"></script>
 
 	<script type="text/javascript">
 		$('.carousel').carousel();
