@@ -2,7 +2,7 @@
 		
 		body{
 			font-family: 'Montserrat', sans-serif;
-			/*font-size:18px;*/
+			font-size:18px;
 			/*background-color:#CCC;*/
 		}
 
@@ -15,8 +15,20 @@
 		.box {
 			font-size: 3em;
 			text-align: center;
-			margin-bottom: 1em;
-			border: 3px solid gray;
+			margin-bottom: 0.4em;
+		}
+
+		.feature-box {
+			border-bottom: 3px solid #EEEEEE;
+			margin-bottom: 3em;
+		}
+
+		.left-feature {
+			border-right: 3px solid #EEEEEE;
+		}
+
+		.feature-text {
+			color: #757575;
 		}
 
 		.float{
