@@ -27,8 +27,10 @@
 <script src="/toastr/build/toastr.min.js"></script>
 <script type="text/javascript">
 $(".searchButton").on("click", () => {
-  if(validVinFormat($('.searchTerm').val())){
+  let vin = $('.searchTerm').val();
+  if(validVinFormat(vin)){
     console.log('redirect to car.html');
+    window.location.href = "/car/" + vin;
   } else {
     showError();
   }
