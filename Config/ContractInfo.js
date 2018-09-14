@@ -1,5 +1,5 @@
 function getContractAddress() {
-    let address = "0x36e184d0e3f149d83101fb2791681028869fad44";
+    let address = "0x39135076f78951b614a88ce8f4faa4c2b496cdc9";
     return address;
 }
 function getContractABI() {
