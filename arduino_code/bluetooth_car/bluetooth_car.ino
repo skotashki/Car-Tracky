@@ -3,6 +3,7 @@
 void setup() 
 { 
    std_io_setup();
+   led_manager_setup();
    wheels_init();
    wheels_stop();
 } 
