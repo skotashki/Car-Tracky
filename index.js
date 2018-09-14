@@ -9,7 +9,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
-
 //Web3 for blockchain interaction
 const Web3 = require('web3');
 const web3 = new Web3('http://35.242.225.96:8545')
@@ -39,22 +38,22 @@ app.get('/car/:vin', async (req, res) => {
 
 			//TODO: send to the view
 		}
-	})
 
-	CarContract.methods.getCarPreviousOwnersCount("123").call( (err, res) => {
-		if(!err) {
-			let ownersLength = res.toString();
+		CarContract.methods.getCarPreviousOwnersCount("123").call( (err, res) => {
+			if(!err) {
+				let ownersLength = res.toString();
 
-			for (var i = 0; i < 1 * ownersLength; i++) {
-				Contract.methods.getCarPreviousOwnersByIndex("123", i).call( (err, res) => {
-					//TODO : test it wit data
-					console.log(res)
-				})
+				for (var i = 0; i < 1 * ownersLength; i++) {
+					Contract.methods.getCarPreviousOwnersByIndex("123", i).call( (err, res) => {
+						//TODO : test it wit data
+						console.log(res)
+					})
+				}
 			}
-		}
+		})
+
+		res.send(path.join(__dirname + '/car.ejs'))
 	})
-	
-	res.sendFile(path.join(__dirname + '/car.html'))
 })
 
 app.get('/register', (req, res) => {
@@ -67,7 +66,7 @@ app.post('/register', (req, res) => {
 	let mileage = req.body.mileage
 	let img = req.body.img
 	
-	res.sendFile(path.join(__dirname + '/register.html'))
+	res.render(path.join(__dirname + '/register'))
 })
 
-app.listen(3000, () => { console.log("Server is listening on port 3000") })
+app.listen(process.env.PORT || 5000, () => { console.log("Server is listening on port 5000") })
