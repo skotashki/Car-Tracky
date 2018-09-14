@@ -16,40 +16,35 @@
 </head>
 <body>
 	<div class="container">
-	<div id="myCarousel" class="carousel slide" data-ride="carousel">
-	  <!-- Indicators -->
-	  <ol class="carousel-indicators">
-	    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-	    <li data-target="#myCarousel" data-slide-to="1"></li>
-	    <li data-target="#myCarousel" data-slide-to="2"></li>
-	  </ol>
+		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		  <!-- Indicators -->
+		  <ol class="carousel-indicators">
+		    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		    <li data-target="#myCarousel" data-slide-to="1"></li>
+		    <li data-target="#myCarousel" data-slide-to="2"></li>
+		  </ol>
 
-	  <!-- Wrapper for slides -->
-	  <div class="carousel-inner">
-	    <div class="item active">
-	      <img src="images/tesla-red.png">
-	    </div>
+		  <!-- Wrapper for slides -->
+		  <div class="carousel-inner">
+		    <div class="item active">
+		      <img src="images/tesla-red.png">
+		    </div>
 
-	    <div class="item">
-	      <img src="images/tesla-red.png">
-	    </div>
+		    <div class="item">
+		      <img src="images/tesla-red.png">
+		    </div>
 
-	    <div class="item">
-	      <img src="images/tesla-red.png">
-	    </div>
-	  </div>
-	  
-	</div>
-
-<!-- 		<div class="row">
-			<img class="car-image" src="images/tesla-red.png">
-		</div> -->
+		    <div class="item">
+		      <img src="images/tesla-red.png">
+		    </div>
+		  </div>
+		</div>
 
 		<div class="row feature-box">
 			<div class="col-sm-6 left-feature">
 				<div class="box">
 					<span class="feature-text">Mileage</span><br>
-					125 000 KM
+					<span id="mileage">125 000</span>KM
 				</div>
 			</div>
 			
@@ -60,6 +55,10 @@
 				</div>
 			</div>
 			<hr>
+		</div>
+
+		<div class="row">
+			<canvas id="popChart" width="600" height="200"></canvas>
 		</div>
 
 		<div class="row">
@@ -92,7 +91,7 @@
 		</div>
 	</div>
 
-	<a href="#" v-confirm="{ok: makeAdmin, cancel: doNothing, message: 'User will be given admin privileges. Make user an Admin?'}"" class="float">
+	<a href="#">
 		<i class="fas fa-dollar-sign fa-2x my-float"></i>
 	</a>
 
@@ -103,12 +102,43 @@
 
   	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-	<script type="text/javascript" src="libraries/vuejs-dialog.min.js"></script>
-	<script type="text/javascript" src="libraries/vuejs-dialog-mixin.min.js"></script>
+
+	<script type="text/javascript" src="node_modules/chart.js/dist/Chart.min.js"></script>
 
 	<script type="text/javascript">
 		$('.carousel').carousel();
+	</script>
+
+	<script type="text/javascript">
+	var popCanvas = jQuery("#popChart");
+	var popCanvas = document.getElementById("popChart");
+	var popCanvas = document.getElementById("popChart").getContext("2d");
+
+	var barChart = new Chart(popCanvas, {
+	  type: 'line',
+	  data: {
+	    labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"],
+	    datasets: [{
+	      label: 'Mileage',
+	      data: [10000, 20000, 12000, 11000, 9000, 5000, 7000, 8000, 15000, 23000],
+	      steppedLine : true,
+	      backgroundColor: [
+	        'rgba(1, 162, 242, 0.6)',
+	        'rgba(54, 162, 235, 0.6)',
+	        'rgba(255, 206, 86, 0.6)',
+	        'rgba(75, 192, 192, 0.6)',
+	        'rgba(153, 102, 255, 0.6)',
+	        'rgba(255, 159, 64, 0.6)',
+	        'rgba(255, 99, 132, 0.6)',
+	        'rgba(54, 162, 235, 0.6)',
+	        'rgba(255, 206, 86, 0.6)',
+	        'rgba(75, 192, 192, 0.6)',
+	        'rgba(153, 102, 255, 0.6)'
+	      ]
+	    }],
+
+	  }
+	});
 	</script>
 </body>
 </html>
