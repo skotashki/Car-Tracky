@@ -33,37 +33,23 @@ app.get('/', (req, res) => {
 
 app.get('/car/:vin', async (req, res) => {
 	let vin = req.params.vin;
-	let currentCarOwner;
-	let deviceAddress;
 
-	CarContract.methods.getCarDetails(vin).call( (err, res) => {
-		if(!err) {
-			let currentCarOwner = res[0]
-			let deviceAddress = res[1]
-			let mileageCounter = res[2]
-			let imageHash = res[3]
+	var details = await CarContract.methods.getCarDetails(vin).call()
 
-			//TODO: send to the view
-		}
+	let currentCarOwner = details[0];
+	let deviceAddress = details[1];
+	let mileageCounter = details[2];
+	let imageHash = details[3];	
 
-		CarContract.methods.getCarPreviousOwnersCount(vin).call( (err, res) => {
-			if(!err) {
-				let ownersLength = res.toString();
+	let previousOwners = await CarContract.methods.getCarPreviousOwnersCount(vin).call()
 
-				for (var i = 0; i < 1 * ownersLength; i++) {
-					Contract.methods.getCarPreviousOwnersByIndex("123", i).call( (err, res) => {
-						//TODO : test it wit data
-						console.log(res)
-					})
-				}
-			}
-		})
-	})
-
+	for (var i = 0; i < previousOwners; i++) {
+		let owner = await CarContract.methods.getCarPreviousOwnersByIndex(vin,i)
+	}	console.log(owner)
+	
 	res.render('car', {
 		vin : vin,
-		contractAddress : contractAddress,
-		contractABI : contractABI		
+		contractAddress : contractAddress		
 	})
 })
 
@@ -84,4 +70,4 @@ app.post('/register', (req, res) => {
 	res.render('/register')
 })
 
-app.listen(process.env.PORT || 5000, () => { console.log("Server is listening on port 5000") })
+app.listen(process.env.PORT || 3000, () => { console.log("Server is listening on port 5000") })
