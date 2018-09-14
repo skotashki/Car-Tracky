@@ -17,6 +17,7 @@ const Web3 = require('web3');
 const web3 = new Web3('http://35.242.225.96:8545')
 
 const config = require('./Config/ContractInfo.js')
+
 const contractAddress = '0x7c164532362e967201af1bbf17540c5f1853b03f'
 const CarContract = new web3.eth.Contract(
 	config.getContractABI(),
@@ -68,6 +69,10 @@ app.post('/register', (req, res) => {
 	let year = req.body.year
 	let mileage = req.body.mileage
 	let img = req.body.img
+	let device_id = req.body.device_id
+	let vin = req.body.vin
+
+	// CarContract.methods.registerCar(vin, device_id, mileage, img)
 	
 	res.render('/register')
 })
