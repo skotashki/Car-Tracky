@@ -3,7 +3,6 @@
 body{
 	font-family: 'Montserrat', sans-serif;
 	font-size:18px;
-	/*background-color:#CCC;*/
 }
 
 a:hover {
@@ -25,7 +24,7 @@ a:hover {
 
 .feature-box {
 	border-bottom: 3px solid #EEEEEE;
-	margin-bottom: 3em;
+	margin-bottom: 1.2em;
 }
 
 .left-feature {
@@ -58,3 +57,8 @@ a:hover {
 
 table {
 	font-size : 20px;
+}
+
+canvas {
+	margin-bottom: 1.5em;
+}
