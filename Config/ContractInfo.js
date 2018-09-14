@@ -3,7 +3,7 @@ function getContractOwner() {
     return ownerAddress;
 }
 function getContractAddress() {
-    let address = "0xde96194e06f498b779cb1cf16dee340ba58186a1";
+    let address = "0x7c164532362e967201af1bbf17540c5f1853b03f";
     return address;
 }
 function getContractABI() {
