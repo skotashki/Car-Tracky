@@ -9,6 +9,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
 //Web3 for blockchain interaction
 const Web3 = require('web3');
 const web3 = new Web3('http://35.242.225.96:8545')
@@ -24,7 +27,7 @@ app.use(express.static('public'))
 app.use(express.static('node_modules'))
 
 app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname + '/index.html'))
+	res.render('index')
 })
 
 app.get('/car/:vin', async (req, res) => {
@@ -51,13 +54,13 @@ app.get('/car/:vin', async (req, res) => {
 				}
 			}
 		})
-
-		res.send(path.join(__dirname + '/car.ejs'))
 	})
+
+	res.render('car')
 })
 
 app.get('/register', (req, res) => {
-	res.sendFile(path.join(__dirname + '/register.html'))
+	res.render('register')
 })
 
 app.post('/register', (req, res) => {
@@ -66,7 +69,7 @@ app.post('/register', (req, res) => {
 	let mileage = req.body.mileage
 	let img = req.body.img
 	
-	res.render(path.join(__dirname + '/register'))
+	res.render('/register')
 })
 
 app.listen(process.env.PORT || 5000, () => { console.log("Server is listening on port 5000") })
