@@ -34,21 +34,26 @@ app.get('/', (req, res) => {
 app.get('/car/:vin', async (req, res) => {
 	let vin = req.params.vin;
 
-	var details = CarContract.methods.getCarDetails(vin)
-		.call({
+	var details = await CarContract.methods.getCarDetails(vin).call({
 			gasLimit: 250000, value:0, gas: 500000
-		}, function (err, result) {
-			//console.log(err);
-			console.log(result);
-		}
-		).catch(function (error) {
-			///console.log(error);
-        });
+		});
+	console.log(details)
+	// var details = CarContract.methods.getCarDetails(vin)
+	// 	.call({
+	// 		gasLimit: 250000, value:0, gas: 500000
+	// 	}, function (err, result) {
+	// 		//console.log(err);
+	// 		console.log(result);
+	// 	}
+	// 	).catch(function (error) {
+	// 		///console.log(error);
+ //        });
 
 	let currentCarOwner = details[0];
 	let deviceAddress = details[1];
 	let mileageCounter = details[2];
 	let imageHash = details[3];	
+	let mileage = '';
 
 	let previousOwners = await CarContract.methods.getCarPreviousOwnersCount(vin).call()
 

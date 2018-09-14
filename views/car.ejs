@@ -43,14 +43,14 @@
 			<div class="col-sm-6 left-feature">
 				<div class="box">
 					<span class="feature-text">Mileage</span><br>
-					<span id="mileage">125 000</span>KM
+					<span id="mileage">0</span>CM
 				</div>
 			</div>
 			
 			<div class="col-sm-6">
 				<div class="box">
 					<span class="feature-text">Max Speed </span><br>
-					350 KM
+					15 CM/s
 				</div>
 			</div>
 			<hr>
@@ -113,10 +113,10 @@
 	var mileageChart = new Chart(popCanvas, {
 	  type: 'line',
 	  data: {
-	    labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"],
+	    labels: ["Day 1", "Day 2", "Day3", "Day4", "Day 5",],
 	    datasets: [{
 	      label: 'Mileage',
-	      data: [10000, 20000, 12000, 11000, 9000, 5000, 7000, 8000, 15000, 23000],
+	      data: [1, 3, 5],
 	      steppedLine : true,
 	      backgroundColor: [
 	        'rgba(1, 162, 242, 0.6)',
@@ -136,34 +136,35 @@
 	  }
 	});
 
-	function addData(){
-		let labels = ["2019"];
-		let data = [25000];
+	function addData(label, mileage){
+		let labels = [label];
+		let data = [mileage];
 
 		mileageChart.data.labels.push(labels)
 		mileageChart.data.datasets.forEach( (dataset) => {
         	dataset.data.push(data);
     	});
 
-    	$("#mileage").text('125 005');
+    	$("#mileage").text(mileage);
     	mileageChart.update();
 	}
 
 	function registerEventWatcher(address,abi,vin){
-		// var web3 = new Web3(new Web3.providers.HttpProvider("http://35.242.225.96:8545"))
-		// var MyContract = web3.eth.contract(abi);
-		// // Instantiate from an existing address:
-		// var myContractInstance = MyContract.at(address);
-		// var event = myContractInstance.MileageChange();
-		// // watch for changes
-		// event.watch(function(error, result){
- 		// 	if (!error)
- 		// 	    console.log(result);
-		// });
+		var web3 = new Web3(new Web3.providers.HttpProvider("http://35.242.225.96:8545"))
+		var MyContract = web3.eth.contract(abi);
+		// Instantiate from an existing address:
+		var myContractInstance = MyContract.at(address);
+		var event = myContractInstance.MileageChange();
+		
+        // watch for changes
+		event.watch(function(error, result){
+ 			if (!error)
+            addData("1", result.args.mileage.toNumber())
+		});
 	}
 
-	$('body').keypress(() => {
-		addData()
+	$('body').keypress((e) => {
+		addData("1 day", 1)
 	})
 
  	let contractAbi = [
