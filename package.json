@@ -4,6 +4,7 @@
   "description": "Repo holding source code for Next Block Hackaton",
   "main": "index.js",
   "scripts": {
+    "start" : "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/skotashki/RidersOnTheChain#readme",
   "dependencies": {
-    "chart.js": "^2.7.2"
+    "chart.js": "^2.7.2",
+    "express": "^4.16.3"
   }
 }
