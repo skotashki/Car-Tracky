@@ -1,4 +1,3 @@
-#include <SoftwareSerial.h>
 
 void setup() 
 { 
