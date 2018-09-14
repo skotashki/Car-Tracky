@@ -195,7 +195,7 @@ function getContractABI() {
 }
 
 module.exports = {
-    getContractOwner,
+    // getContractOwner,
     getContractABI,
     getContractAddress
 };
