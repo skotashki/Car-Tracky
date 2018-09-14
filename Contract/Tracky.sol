@@ -67,12 +67,20 @@ library SafeMath {
  */
 contract Tracky {
 using SafeMath for uint;
+
+
+    struct PreviousOwnersInfo {
+        address previousOwnerAddress;
+        uint256 timestamp;
+        uint256 mileageSnapshot;
+    }
 	struct Car {
 		address carOwner;
 		address deviceAddress;
 		string vin;
 		uint mileageCounter;
 		string imageHash;
+	    PreviousOwnersInfo[] previousOwners;
 	}
 	
 	mapping(address => Car) cars;
@@ -118,13 +126,12 @@ using SafeMath for uint;
     public
     onlyRegistrator
     onlyNewCar(_deviceAddress) {
-        Car memory newCar = Car({
-        carOwner: msg.sender,
-        deviceAddress: _deviceAddress,
-        vin: _carVin,
-        mileageCounter: _mileageCounter,
-        imageHash: _imageHash
-        });
+        Car memory newCar;
+        newCar.carOwner = msg.sender;
+        newCar.deviceAddress = _deviceAddress;
+        newCar.vin = _carVin;
+        newCar.mileageCounter = _mileageCounter;
+        newCar.imageHash = _imageHash;
         cars[_deviceAddress] = newCar;
         carsByVin[_carVin] = newCar;
     }
@@ -132,10 +139,20 @@ using SafeMath for uint;
     function transferOwnership(address _carAddress, address _newOwner) 
     public
     onlyRegistrator {
+        addDetailsToPreviousOwner(_carAddress);
         cars[_carAddress].carOwner = _newOwner;
         carsByVin[cars[_carAddress].vin].carOwner = _newOwner;
     }
     
+    function addDetailsToPreviousOwner(address _carAddress)
+    private {
+        PreviousOwnersInfo memory previousOwner;
+        previousOwner.previousOwnerAddress = cars[_carAddress].carOwner;
+        previousOwner.mileageSnapshot = cars[_carAddress].mileageCounter;
+        previousOwner.timestamp = block.timestamp;
+        cars[_carAddress].previousOwners.push(previousOwner);
+        carsByVin[cars[_carAddress].vin].previousOwners.push(previousOwner);
+    }
     
     function getMileage()
     public
@@ -159,5 +176,23 @@ using SafeMath for uint;
                 currentCar.imageHash);
     }
     
+    function getCarPreviousOwnersByIndex(string _carVin, uint _ownerIndex) 
+    public
+    view
+    returns (address previousOwnerAddress,
+            uint mileageSnapshot,
+            uint timestamp)
+    {
+        return (carsByVin[_carVin].previousOwners[_ownerIndex].previousOwnerAddress,
+                carsByVin[_carVin].previousOwners[_ownerIndex].mileageSnapshot,
+                carsByVin[_carVin].previousOwners[_ownerIndex].timestamp);
+    }
+    function getCarPreviousOwnersCount(string _carVin) 
+    public
+    view
+    returns (uint)
+    {
+        return carsByVin[_carVin].previousOwners.length;
+    }
     
 }
