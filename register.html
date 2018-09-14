@@ -15,7 +15,7 @@
 <div class="form">
   <img src="images/logo.png"/>
   <form class="register-form">
-    <select tabindex="1" id="brand">
+    <select tabindex="1" id="brand" name="brand">
       <option value="" disabled selected>Select car brand</option>
       <option value="ACURA">ACURA</option>
       <option value="ASTON MARTIN">ASTON MARTIN</option>
@@ -62,7 +62,8 @@
       <option value="VOLKSWAGEN">VOLKSWAGEN</option>
       <option value="VOLVO">VOLVO</option>
     </select>
-    <select tabindex="1" id="year">
+    
+    <select tabindex="1" id="year" name="year">
       <option value="" disabled selected>Select car year</option>
       <option value="2014">2018</option>
       <option value="2014">2017</option>
@@ -94,8 +95,8 @@
       <option value="1991">1991</option>
       <option value="1990">1990</option>
     </select>
-    <input type="text" placeholder="Enter car VIN number"/>
-    <input type="text" placeholder="Enter car mileage (in kilometers)"/>
+    <input type="text" name="vin" placeholder="Enter car VIN number"/>
+    <input type="text" name="mileage" placeholder="Enter car mileage (in kilometers)"/>
     Upload Car Images (optional):
     <input type="file" id="imageInput" name="img" multiple>
     <button>Register My Car</button>
