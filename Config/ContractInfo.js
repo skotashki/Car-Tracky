@@ -1,5 +1,5 @@
 function getContractAddress() {
-    let address = "0xf1589253ad13f4fef808c9f57c8e78a393ac7e05";
+    let address = "0x36e184d0e3f149d83101fb2791681028869fad44";
     return address;
 }
 function getContractABI() {
@@ -45,6 +45,14 @@ function getContractABI() {
             "inputs": [
                 {
                     "name": "_carVin",
+                    "type": "string"
+                },
+                {
+                    "name": "_year",
+                    "type": "uint256"
+                },
+                {
+                    "name": "_brand",
                     "type": "string"
                 },
                 {
