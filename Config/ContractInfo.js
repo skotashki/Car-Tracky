@@ -9,35 +9,65 @@ function getContractAddress() {
 function getContractABI() {
     let abi = [
         {
-            "anonymous": false,
-            "inputs": [
+            "constant": true,
+            "inputs": [],
+            "name": "getMileage",
+            "outputs": [
                 {
-                    "indexed": false,
-                    "name": "_from",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "name": "_amount",
+                    "name": "",
                     "type": "uint256"
                 }
             ],
-            "name": "LogDonationReceived",
-            "type": "event"
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
         },
         {
             "constant": false,
             "inputs": [
                 {
-                    "name": "_type",
-                    "type": "bytes10"
-                },
-                {
-                    "name": "_index",
+                    "name": "_amount",
                     "type": "uint256"
                 }
             ],
-            "name": "adopt",
+            "name": "addMileage",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "name": "_carVin",
+                    "type": "string"
+                }
+            ],
+            "name": "getCarPreviousOwnersCount",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "_carAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "_newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "transferOwnership",
             "outputs": [],
             "payable": false,
             "stateMutability": "nonpayable",
@@ -47,299 +77,100 @@ function getContractABI() {
             "constant": false,
             "inputs": [
                 {
-                    "name": "_amount",
+                    "name": "_carVin",
+                    "type": "string"
+                },
+                {
+                    "name": "_deviceAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "_mileageCounter",
                     "type": "uint256"
-                }
-            ],
-            "name": "giveDonation",
-            "outputs": [],
-            "payable": true,
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "name": "_type",
-                    "type": "bytes10"
-                },
-                {
-                    "name": "_name",
-                    "type": "bytes10"
-                },
-                {
-                    "name": "_age",
-                    "type": "uint256"
-                },
-                {
-                    "name": "_breed",
-                    "type": "bytes20"
-                },
-                {
-                    "name": "_gender",
-                    "type": "bytes6"
                 },
                 {
                     "name": "_imageHash",
                     "type": "string"
                 }
             ],
-            "name": "leaveForAdoption",
+            "name": "registerCar",
             "outputs": [],
             "payable": false,
             "stateMutability": "nonpayable",
             "type": "function"
         },
         {
-            "constant": false,
+            "constant": true,
             "inputs": [
                 {
-                    "name": "_type",
-                    "type": "bytes10"
+                    "name": "_carVin",
+                    "type": "string"
+                }
+            ],
+            "name": "getCarDetails",
+            "outputs": [
+                {
+                    "name": "carOwner",
+                    "type": "address"
                 },
                 {
-                    "name": "_index",
+                    "name": "deviceAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "mileageCounter",
+                    "type": "uint256"
+                },
+                {
+                    "name": "imageHash",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "name": "_carVin",
+                    "type": "string"
+                },
+                {
+                    "name": "_ownerIndex",
                     "type": "uint256"
                 }
             ],
-            "name": "removePet",
-            "outputs": [],
+            "name": "getCarPreviousOwnersByIndex",
+            "outputs": [
+                {
+                    "name": "previousOwnerAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "mileageSnapshot",
+                    "type": "uint256"
+                },
+                {
+                    "name": "timestamp",
+                    "type": "uint256"
+                }
+            ],
             "payable": false,
-            "stateMutability": "nonpayable",
+            "stateMutability": "view",
             "type": "function"
         },
         {
-            "constant": false,
-            "inputs": [],
-            "name": "retrieveFunds",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [],
-            "name": "returnPet",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [],
+            "inputs": [
+                {
+                    "name": "_registrator",
+                    "type": "address"
+                }
+            ],
             "payable": false,
             "stateMutability": "nonpayable",
             "type": "constructor"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "ableToAdopt",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "ableToReturn",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "_index",
-                    "type": "uint256"
-                }
-            ],
-            "name": "getCategoryName",
-            "outputs": [
-                {
-                    "name": "name",
-                    "type": "bytes10"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "getLastAdoptedPetInfo",
-            "outputs": [
-                {
-                    "name": "name",
-                    "type": "bytes10"
-                },
-                {
-                    "name": "age",
-                    "type": "uint256"
-                },
-                {
-                    "name": "breed",
-                    "type": "bytes20"
-                },
-                {
-                    "name": "gender",
-                    "type": "bytes6"
-                },
-                {
-                    "name": "petOwner",
-                    "type": "address"
-                },
-                {
-                    "name": "petType",
-                    "type": "bytes10"
-                },
-                {
-                    "name": "imageHash",
-                    "type": "string"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "getNumberOfCategories",
-            "outputs": [
-                {
-                    "name": "count",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "_type",
-                    "type": "bytes10"
-                }
-            ],
-            "name": "getNumberOfPetsInType",
-            "outputs": [
-                {
-                    "name": "count",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "_type",
-                    "type": "bytes10"
-                },
-                {
-                    "name": "_index",
-                    "type": "uint256"
-                }
-            ],
-            "name": "getPetImageHash",
-            "outputs": [
-                {
-                    "name": "imageHash",
-                    "type": "string"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "_type",
-                    "type": "bytes10"
-                },
-                {
-                    "name": "_index",
-                    "type": "uint256"
-                }
-            ],
-            "name": "getPetInfo",
-            "outputs": [
-                {
-                    "name": "name",
-                    "type": "bytes10"
-                },
-                {
-                    "name": "age",
-                    "type": "uint256"
-                },
-                {
-                    "name": "breed",
-                    "type": "bytes20"
-                },
-                {
-                    "name": "gender",
-                    "type": "bytes6"
-                },
-                {
-                    "name": "petOwner",
-                    "type": "address"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "getTotalDonations",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "totalDonations",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
         }
     ];
     return abi;
