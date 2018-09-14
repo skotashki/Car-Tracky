@@ -32,8 +32,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/car/:vin', async (req, res) => {
-	
-	CarContract.methods.getCarDetails("123").call( (err, res) => {
+	let vin = req.params.vin;
+	let currentCarOwner;
+	let deviceAddress;
+
+	CarContract.methods.getCarDetails(vin).call( (err, res) => {
 		if(!err) {
 			let currentCarOwner = res[0]
 			let deviceAddress = res[1]
@@ -43,7 +46,7 @@ app.get('/car/:vin', async (req, res) => {
 			//TODO: send to the view
 		}
 
-		CarContract.methods.getCarPreviousOwnersCount("123").call( (err, res) => {
+		CarContract.methods.getCarPreviousOwnersCount(vin).call( (err, res) => {
 			if(!err) {
 				let ownersLength = res.toString();
 
@@ -57,7 +60,9 @@ app.get('/car/:vin', async (req, res) => {
 		})
 	})
 
-	res.render('car')
+	res.render('car', {
+		vin : vin
+	})
 })
 
 app.get('/register', (req, res) => {
