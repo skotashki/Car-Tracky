@@ -61,5 +61,20 @@ Finally, it has a software serial interface with the `ESP32` board. It uses it t
 
 The `ESP32` software is responsible for interfacing with the `CarTracky` smart contract via a modified version of the `web3-arduino` library (https://github.com/kopanitsa/web3-arduino). It also has a wifi module to communicate with the internet and use it as a communication channel for connecting to an ethereum node (By default, we use `Infura`, but for demo purposes, it is changed to an instance of a `Ganache` node hosted in a google cloud).
 
-### Hardware Pinout
-TODO: Complete section
+### Hardware
+The hardware is based on a modified version of the `Keyestudio bluetooth smart car`. 
+Details about this product can be found here: http://wiki.keyestudio.com/index.php/Ks0159_keyestudio_Desktop_Bluetooth_Mini_Smart_Car
+
+The project which has been used as a basis is http://wiki.keyestudio.com/index.php/Ks0159_keyestudio_Desktop_Bluetooth_Mini_Smart_Car#Project_3:_Bluetooth_smart_car
+
+What we have added to it is a connection to a `ESP32` Dev Module (https://www.espressif.com/en/products/hardware/esp32-devkitc/overview). Also, we have removed the three proximity sensors and the three line-tracking sensors as they are not needed for this project.
+
+In order to connect the `Arduino Uno` and the `ESP32` Module, we are using a logic level converter (https://www.sparkfun.com/products/12009) due to the fact that `Arduino Uno` uses a 5V working voltage, while the `ESP32` uses 3.3V voltage. In order to interface the two, we are using this component to achieve a 5V to 3.3V conversion.
+
+The interface is realised by connecting pin 9 of the `Arduino Uno` to the RX pin of `ESP32`. The connection is intermediated by the logic level converter. On the `Arduino Uno`, we use a software serial interface (115200 Hz) with TX=pin 9, RX=pin 8 (not connected).
+On the `ESP32`, we use the standard Serial interface on the same frequency.
+
+And for supplying voltage to both `Arduino Uno` and `ESP32`, we have connected the 5V pin of the Uno to the 5V pin of the `ESP32` board.
+For power supply, we are using two 3.6V lithium ion batteries (https://uk.farnell.com/ansmann/1307-0000/li-ion-battery-3-6v-2600mah/dp/2723326).
+
+The final hardware component is a set of three LEDs. They are used for debugging purposes. Blinking upon establishing connection with WiFi, upon successful transmission of mileage data from the `Arduino Uno` to `ESP32` and upon successful publishing of a ethereum transaction with an invocation of `addMileage(uint)` with the received mileage data.
