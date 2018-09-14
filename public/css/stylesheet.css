@@ -35,7 +35,7 @@
 }
 .form button {
   outline: 0;
-  background: #EF3B3A;
+  background: #01a9f2;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -54,7 +54,7 @@
   font-size: 12px;
 }
 .form .message a {
-  color: #EF3B3A;
+  color: #01a9f2;
   text-decoration: none;
 }
 
