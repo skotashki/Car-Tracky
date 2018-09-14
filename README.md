@@ -46,6 +46,8 @@ The project consists of a smart contract, written in `Solidity`, arduino softwar
 ### Smart Contract
 The smart contract can be found in the `Contracts` directory.
 
+### The JavaScript Front-End
+TODO: Complete section
 
 ### Arduino Software
 The arduino software is in `arduino_code`.
@@ -58,9 +60,6 @@ It has management for the wheel motors, leds indicating various events occuring 
 Finally, it has a software serial interface with the `ESP32` board. It uses it to forward mileage data to the `ESP32` board, which then broadcasts it to the ethereum blockchain.
 
 The `ESP32` software is responsible for interfacing with the `CarTracky` smart contract via a modified version of the `web3-arduino` library (https://github.com/kopanitsa/web3-arduino). It also has a wifi module to communicate with the internet and use it as a communication channel for connecting to an ethereum node (By default, we use `Infura`, but for demo purposes, it is changed to an instance of a `Ganache` node hosted in a google cloud).
-
-### The JavaScript Front-End
-TODO: Complete section
 
 ### Hardware Pinout
 TODO: Complete section
