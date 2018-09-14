@@ -119,6 +119,7 @@ using SafeMath for uint;
 	 */
 	address private registrator;
 	
+	event MileageChange(uint timestamp, string carVin, uint mileage);
 	/**
 	 * We need to provide who the Registrator is when initilizing the contract.
 	 * @param _registrator address - The address of the Registrator Authority
@@ -166,6 +167,7 @@ using SafeMath for uint;
 	onlyDevice()
 	existingCar() {
 	    cars[msg.sender].mileageCounter = cars[msg.sender].mileageCounter.add(_amount);
+	    emit MileageChange(block.timestamp, cars[msg.sender].vin, cars[msg.sender].mileageCounter);
 	}
 	
 	/**
