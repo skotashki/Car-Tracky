@@ -45,6 +45,7 @@ The project consists of a smart contract, written in `Solidity`, arduino softwar
 
 ### Smart Contract
 The smart contract can be found in the `Contracts` directory.
+Extensive documentation can be found in the smart contract source code.
 
 ### The JavaScript Front-End
 TODO: Complete section
