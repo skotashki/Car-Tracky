@@ -25,12 +25,15 @@ const string contract_addr = CONTRACT_ADDRESS;
 long accumulated_mileage = 0;
 
 Web3 web3(&host, &path);
+unsigned long trackMillis = 0;
 
 void setup() {
     USE_SERIAL.begin(115200);
-
+    pinMode(35, OUTPUT);
     pinMode(25, OUTPUT);
+    
     digitalWrite(25, LOW);
+    digitalWrite(35, LOW);
 
     for(uint8_t t = 4; t > 0; t--) {
         USE_SERIAL.printf("[SETUP] WAIT %d...\n", t);
@@ -55,6 +58,14 @@ void setup() {
 }
 
 void loop() {
+
+  unsigned long currentMillis = millis();
+  if (trackMillis != 0 && (currentMillis - trackMillis) > 5000)
+  {
+    digitalWrite(35, LOW);
+    trackMillis = 0;
+  }
+  
   // put your main code here, to run repeatedly:
   if (Serial.available() > 0)
   {
@@ -89,6 +100,9 @@ void eth_send_example(long currentMileage) {
     USE_SERIAL.println(p.c_str());
     string result = contract.SendTransaction(nonceVal, gasPriceVal, gasLimitVal, &toStr, &valueStr, &p);
     USE_SERIAL.println(result.c_str());
+    
+    digitalWrite(35, HIGH);
+    trackMillis = millis();
 
 //    if(strstr(result, "error") != NULL) {
 //        accumulated_mileage += currentMileage;
