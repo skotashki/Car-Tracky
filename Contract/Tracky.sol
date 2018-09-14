@@ -94,6 +94,8 @@ using SafeMath for uint;
 		string vin;
 		uint mileageCounter;
 		string imageHash;
+		uint year;
+		string brand;
 	}
 	/**
 	 * Storing Device Address to Car. That way we store information about which device.
@@ -174,11 +176,15 @@ using SafeMath for uint;
 	 * Used by the Registrator to register the car.
 	 * @dev - We have one modifier onlyNewCar(_deviceAddress) to check if the car is new
 	 * @param  _carVin string  _carVin - Car VIN.
+	 * @return _year uint - The Car year.
+     * @return _brand string- The Brand of the car.
 	 * @param  _deviceAddress address _deviceAddress - The Device address
 	 * @param  _mileageCounter uint    _mileageCounter - Initial mileage Counter.
 	 * @param  _imageHash string  _imageHash   - Beta: Path to the image. Production: IPFS Image hash
 	 */
 	function registerCar(string _carVin, 
+	                    uint _year,
+	                    string _brand,
 	                    address _deviceAddress,
 	                    uint _mileageCounter,
 	                    string _imageHash)
@@ -191,6 +197,8 @@ using SafeMath for uint;
         newCar.vin = _carVin;
         newCar.mileageCounter = _mileageCounter;
         newCar.imageHash = _imageHash;
+        newCar.year = _year;
+        newCar.brand = _brand;
         cars[_deviceAddress] = newCar;
         carsByVin[_carVin] = newCar;
     }
@@ -235,6 +243,8 @@ using SafeMath for uint;
      * Returns the Details about the Car
      * @param  _carVin string _carVin - The Vin of the Car to get the information
      * @return carOwner  address- The current Owner of the Car.
+     * @return year uint- The Car year.
+     * @return brand string- The Brand of the car.
      * @return deviceAddress address - The Address of the Device.
      * @return mileageCounter uint - The Mileage information about the Car.
      * @return imageHash string - The Image Path.
@@ -243,12 +253,16 @@ using SafeMath for uint;
     public
     view
     returns (address carOwner, 
+            uint year,
+            string brand,
             address deviceAddress,
 	        uint mileageCounter,
 	        string imageHash)
     {
         Car memory currentCar = carsByVin[_carVin];
         return (currentCar.carOwner,
+                currentCar.year,
+                currentCar.brand,
                 currentCar.deviceAddress,
                 currentCar.mileageCounter,
                 currentCar.imageHash);
