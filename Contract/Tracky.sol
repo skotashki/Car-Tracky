@@ -1,11 +1,6 @@
 pragma solidity ^0.4.24;
-/**
- * @title SafeMath
- * @dev Math operations with safety checks that revert on error
- */
 
 import "./SafeMath.sol";
-
 
 /**
  * The Tracky contract that stores information about cars...
