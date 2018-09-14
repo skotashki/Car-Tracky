@@ -62,6 +62,7 @@ library SafeMath {
     return a % b;
   }
 }
+
 /**
  * The Tracky contract that stores information about cars...
  */
@@ -80,6 +81,7 @@ using SafeMath for uint;
         uint256 timestamp;
         uint256 mileageSnapshot;
     }
+	
     /**
 	* Our main struct that hold the entire information about the car.
 	* @dev Used to track everything we need.
@@ -97,17 +99,20 @@ using SafeMath for uint;
 		uint year;
 		string brand;
 	}
+	
 	/**
 	 * Storing Device Address to Car. That way we store information about which device.
 	 * @param  FirstParam address - Device Address
 	 */
 	mapping(address => Car) cars;
+	
 	/**
 	 * We do simillar mapping for the car details. Here we mapped from string which is the 
 	 * device VIN. We currently need to do that to enable the search functionality.
 	 * @param  vin string - The key to the map is the Car Vin.
 	 */
 	mapping(string => Car) carsByVin;
+	
 	/**
 	 * Storing Device Address to PreviousOwners. That way we store information which were the owners of the device.
 	 * @param  FirstParam address - Device Address
@@ -122,6 +127,7 @@ using SafeMath for uint;
 	address private registrator;
 	
 	event MileageChange(uint timestamp, string carVin, uint mileage);
+	
 	/**
 	 * We need to provide who the Registrator is when initilizing the contract.
 	 * @param _registrator address - The address of the Registrator Authority
@@ -138,6 +144,7 @@ using SafeMath for uint;
 	    require(cars[msg.sender].deviceAddress == msg.sender);
 	    _;
 	}
+	
 	/**
 	 * This modifier is used to make sure that the requested car Exists.
 	 */
@@ -145,6 +152,7 @@ using SafeMath for uint;
 	    require(cars[msg.sender].carOwner != 0x0);
 	    _;
 	}
+	
 	/**
 	 * This modifier is used to make sure that the Sender of transaction is the Registrator
 	 */
@@ -152,6 +160,7 @@ using SafeMath for uint;
 	    require(msg.sender == registrator);
 	    _;
 	}
+	
 	/**
 	 * This modifier is used to make sure that the Car Doesn't Exist.
 	 */
@@ -159,6 +168,7 @@ using SafeMath for uint;
 	    require(cars[_carAddress].carOwner == 0x0);
 	    _;
 	}
+	
 	/**
 	 * Adding Mileage to the device. This is called by the Device it self.
 	 * @dev - We have to modifiers. onlyDevice() and existingCar()
@@ -202,6 +212,7 @@ using SafeMath for uint;
         cars[_deviceAddress] = newCar;
         carsByVin[_carVin] = newCar;
     }
+	
     /**
      * Used to transfer the Onwership of the car. If the car is sold
      * @dev - Here we call the private method addDetailsToPreviousOwner(_carAddress)
@@ -216,6 +227,7 @@ using SafeMath for uint;
         cars[_carAddress].carOwner = _newOwner;
         carsByVin[cars[_carAddress].vin].carOwner = _newOwner;
     }
+	
     /**
      * Handles the buisness logic of setting up the Data for the previous owners.
      * @param _carVin string _carVin - The Vin of the car
@@ -239,6 +251,7 @@ using SafeMath for uint;
     returns (uint) {
         return cars[msg.sender].mileageCounter;
     }
+	
     /**
      * Returns the Details about the Car
      * @param  _carVin string _carVin - The Vin of the Car to get the information
@@ -267,6 +280,7 @@ using SafeMath for uint;
                 currentCar.mileageCounter,
                 currentCar.imageHash);
     }
+	
     /**
      * Getting the information about previous Owners of a Car.
      * @param  _carVin string   _carVin- The Car Vin.
@@ -286,6 +300,7 @@ using SafeMath for uint;
                 previousOwners[_carVin][_ownerIndex].mileageSnapshot,
                 previousOwners[_carVin][_ownerIndex].timestamp);
     }
+	
     /**
      * Giving information of how many owners did the car had.
      * @param  _carVin string _carVin  - The Car Vin
