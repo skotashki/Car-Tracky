@@ -1,11 +1,11 @@
-#define PIN_12 12
+#define PIN_SPEED_LED 10
 
 void led_manager_setup()
 {
-  pinMode(PIN_12, OUTPUT);
+  pinMode(PIN_SPEED_LED, OUTPUT);
 }
 
 void led_manager_speed_led(int state)
 {
-  digitalWrite(PIN_12, state);
+  digitalWrite(PIN_SPEED_LED, state);
 }

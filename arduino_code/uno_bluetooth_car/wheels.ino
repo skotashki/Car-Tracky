@@ -35,7 +35,7 @@ int wheels_are_moving()
 
 void wheels_left(void)
 {
-  digitalWrite(M1,LOW);
+  digitalWrite(M1, LOW);
   digitalWrite(M2, LOW);
   setSpeed(speed);
   isMoving = true;
@@ -43,7 +43,7 @@ void wheels_left(void)
 
 void wheels_right(void)
 {
-  digitalWrite(M1,HIGH);
+  digitalWrite(M1, HIGH);
   digitalWrite(M2, HIGH);
   setSpeed(speed);
   isMoving = true;
@@ -51,22 +51,22 @@ void wheels_right(void)
 
 void wheels_forward(void)
 {
-  digitalWrite(M1,LOW);
-  digitalWrite(M2,HIGH);
+  digitalWrite(M1, LOW);
+  digitalWrite(M2, HIGH);
   setSpeed(speed);
   isMoving = true;
 }
 void wheels_backwards(void)
 {
-  digitalWrite(M1,HIGH);
+  digitalWrite(M1, HIGH);
   digitalWrite(M2, LOW);
   setSpeed(speed);
   isMoving = true;
 }    
 void wheels_stop(void)
 {
-  digitalWrite(M1,LOW);    
-  digitalWrite(M2, LOW);  
+  digitalWrite(M1, LOW);
+  digitalWrite(M2, LOW);
   setSpeed(0);
   isMoving = false;
 }
