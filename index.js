@@ -18,10 +18,10 @@ const web3 = new Web3('http://35.242.225.96:8545')
 
 const config = require('./Config/ContractInfo.js')
 
-const contractAddress = '0x7c164532362e967201af1bbf17540c5f1853b03f'
+const contractAddress = config.getContractAddress();
+const cotnractABI = config.getContractABI();
 const CarContract = new web3.eth.Contract(
-	config.getContractABI(),
-	config.getContractAddress())
+	cotnractABI, contractAddress)
 
 //Static resources for express
 app.use(express.static('public'))
@@ -61,7 +61,9 @@ app.get('/car/:vin', async (req, res) => {
 	})
 
 	res.render('car', {
-		vin : vin
+		vin : vin,
+		contractAddress : contractAddress,
+		cotnractABI : cotnractABI		
 	})
 })
 
