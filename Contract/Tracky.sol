@@ -71,9 +71,9 @@ using SafeMath for uint;
 	/**
 	* Used to store information about the previous owners of the car. 
 	* @dev PreviousOwnersInfo struct is used in the main Car struct.
-	* @param {address} previousOwnerAddress  - The Address of the previous car owner.
-    * @param {uint256} timestamp - The time when the owner changed.
-    * @param {uint256} mileageSanpshot - The Snapshot of the car mileage.
+	* @param previousOwnerAddress address  - The Address of the previous car owner.
+    * @param timestamp uint256 - The time when the owner changed.
+    * @param mileageSanpshot uint256 - The Snapshot of the car mileage.
 	*/
     struct PreviousOwnersInfo {
         address previousOwnerAddress;
@@ -83,11 +83,10 @@ using SafeMath for uint;
     /**
 	* Our main struct that hold the entire information about the car.
 	* @dev Used to track everything we need.
-	* @param {address} carOwner- The address of the current car owner.
-    * @param {address} deviceAddress - The address of the device(car).
-    * @param {string} vin - The car VIN.
-    * @param {string} imageHash - A image of the Car. Beta: Stores string path to image. Idea to store IPFS hash.
-    * @param {PreviousOwnersInfo[]} previousOwners  - Stores information about all of the previous owners.
+	* @param carOwner address - The address of the current car owner.
+    * @param deviceAddress address - The address of the device(car).
+    * @param vin string - The car VIN.
+    * @param imageHash string - A image of the Car. Beta: Stores string path to image. Idea to store IPFS hash.
 	*/
 	struct Car {
 		address carOwner;
@@ -95,30 +94,34 @@ using SafeMath for uint;
 		string vin;
 		uint mileageCounter;
 		string imageHash;
-	    PreviousOwnersInfo[] previousOwners;
 	}
 	/**
 	 * Storing Device Address to Car. That way we store information about which device.
-	 * @param  {address} FirstParam - Device Address
+	 * @param  FirstParam address - Device Address
 	 */
 	mapping(address => Car) cars;
 	/**
 	 * We do simillar mapping for the car details. Here we mapped from string which is the 
 	 * device VIN. We currently need to do that to enable the search functionality.
-	 * @param  {string} vin - The key to the map is the Car Vin.
+	 * @param  vin string - The key to the map is the Car Vin.
 	 */
 	mapping(string => Car) carsByVin;
+	/**
+	 * Storing Device Address to PreviousOwners. That way we store information which were the owners of the device.
+	 * @param  FirstParam address - Device Address
+	 */
+	mapping(string => PreviousOwnersInfo[]) previousOwners;
 
 	/**
 	 * To start using our system we need authority to register your car.
 	 * This address holds who that authority is.
-	 * @param {address} registrator - Holding the address of the Registrator authority
+	 * @param registrator address - Holding the address of the Registrator authority
 	 */
 	address private registrator;
 	
 	/**
 	 * We need to provide who the Registrator is when initilizing the contract.
-	 * @param {address} _registrator - The address of the Registrator Authority
+	 * @param _registrator address - The address of the Registrator Authority
 	 */
 	constructor(address _registrator) 
 	public {
@@ -156,7 +159,7 @@ using SafeMath for uint;
 	/**
 	 * Adding Mileage to the device. This is called by the Device it self.
 	 * @dev - We have to modifiers. onlyDevice() and existingCar()
-	 * @param {uint} _amount - The amount of mileage the Device has travelled.
+	 * @param _amount uint - The amount of mileage the Device has travelled.
 	 */
 	function addMileage(uint _amount) 
 	external
@@ -168,10 +171,10 @@ using SafeMath for uint;
 	/**
 	 * Used by the Registrator to register the car.
 	 * @dev - We have one modifier onlyNewCar(_deviceAddress) to check if the car is new
-	 * @param  {string} string  _carVin - Car VIN.
-	 * @param  {address} address _deviceAddress - The Device address
-	 * @param  {uint} uint    _mileageCounter - Initial mileage Counter.
-	 * @param  {string} string  _imageHash   - Beta: Path to the image. Production: IPFS Image hash
+	 * @param  _carVin string  _carVin - Car VIN.
+	 * @param  _deviceAddress address _deviceAddress - The Device address
+	 * @param  _mileageCounter uint    _mileageCounter - Initial mileage Counter.
+	 * @param  _imageHash string  _imageHash   - Beta: Path to the image. Production: IPFS Image hash
 	 */
 	function registerCar(string _carVin, 
 	                    address _deviceAddress,
@@ -193,50 +196,49 @@ using SafeMath for uint;
      * Used to transfer the Onwership of the car. If the car is sold
      * @dev - Here we call the private method addDetailsToPreviousOwner(_carAddress)
      * 		  Which handles the process of putting the details for previous owners
-     * @param  {address} address _carAddress  - The Address of the Car
-     * @param  {address} address _newOwner    - the Address of the new Car Owner
+     * @param  _carAddress address _carAddress  - The Address of the Car
+     * @param  _newOwner address _newOwner    - the Address of the new Car Owner
      */
     function transferOwnership(address _carAddress, address _newOwner) 
     external
     onlyRegistrator {
-        addDetailsToPreviousOwner(_carAddress);
+        addDetailsToPreviousOwner(cars[_carAddress].vin);
         cars[_carAddress].carOwner = _newOwner;
         carsByVin[cars[_carAddress].vin].carOwner = _newOwner;
     }
     /**
      * Handles the buisness logic of setting up the Data for the previous owners.
-     * @param {address} address _carAddress - The address of the car
+     * @param _carVin string _carVin - The Vin of the car
      */
-    function addDetailsToPreviousOwner(address _carAddress)
+    function addDetailsToPreviousOwner(string _carVin)
     private {
         PreviousOwnersInfo memory previousOwner;
-        previousOwner.previousOwnerAddress = cars[_carAddress].carOwner;
-        previousOwner.mileageSnapshot = cars[_carAddress].mileageCounter;
+        previousOwner.previousOwnerAddress = carsByVin[_carVin].carOwner;
+        previousOwner.mileageSnapshot = carsByVin[_carVin].mileageCounter;
         previousOwner.timestamp = block.timestamp;
-        cars[_carAddress].previousOwners.push(previousOwner);
-        carsByVin[cars[_carAddress].vin].previousOwners.push(previousOwner);
+        previousOwners[_carVin].push(previousOwner);
     }
     
     /**
      * Getting the Mileage of a Car
-     * @return {uint} - Returns the Miles a Car has passed.
+     * @return mileageCount - Returns the Miles a Car has passed.
      */
     function getMileage()
-    external
+    public
     view
     returns (uint) {
         return cars[msg.sender].mileageCounter;
     }
     /**
      * Returns the Details about the Car
-     * @param  {string} string _carVin - The Vin of the Car to get the information
-     * @return {address} carOwner - The current Owner of the Car.
-     * @return {address} deviceAddress - The Address of the Device.
-     * @return {uint} mileageCounter - The Mileage information about the Car.
-     * @return {string} imageHash - The Image Path.
+     * @param  _carVin string _carVin - The Vin of the Car to get the information
+     * @return carOwner  address- The current Owner of the Car.
+     * @return deviceAddress address - The Address of the Device.
+     * @return mileageCounter uint - The Mileage information about the Car.
+     * @return imageHash string - The Image Path.
     */
     function getCarDetails(string _carVin) 
-    external
+    public
     view
     returns (address carOwner, 
             address deviceAddress,
@@ -251,34 +253,34 @@ using SafeMath for uint;
     }
     /**
      * Getting the information about previous Owners of a Car.
-     * @param  {string} string _carVin  - The Car Vin.
-     * @param  {uint} uint   _ownerIndex - The Index for which Owner is the request
-     * @return {address}  previousOwnerAddress - The Previous Owner Address
-     * @return {uint}  mileageSnapshot - The Snapshot of the Mileage when the transfer was made
-     * @return {uint}  timestamp - When did the change of ownership occured
+     * @param  _carVin string   _carVin- The Car Vin.
+     * @param  _ownerIndex uint   _ownerIndex - The Index for which Owner is the request
+     * @return previousOwnerAddress address  - The Previous Owner Address
+     * @return timestamp  uint - The Snapshot of the Mileage when the transfer was made
+     * @return timestamp  uint - When did the change of ownership occured
      */
     function getCarPreviousOwnersByIndex(string _carVin, uint _ownerIndex) 
-    external
+    public
     view
     returns (address previousOwnerAddress,
             uint mileageSnapshot,
             uint timestamp)
     {
-        return (carsByVin[_carVin].previousOwners[_ownerIndex].previousOwnerAddress,
-                carsByVin[_carVin].previousOwners[_ownerIndex].mileageSnapshot,
-                carsByVin[_carVin].previousOwners[_ownerIndex].timestamp);
+        return (previousOwners[_carVin][_ownerIndex].previousOwnerAddress,
+                previousOwners[_carVin][_ownerIndex].mileageSnapshot,
+                previousOwners[_carVin][_ownerIndex].timestamp);
     }
     /**
      * Giving information of how many owners did the car had.
-     * @param  {string} string _carVin  - The Car Vin
-     * @return {uint} - The Amount of previous Owners that the car had
+     * @param  _carVin string _carVin  - The Car Vin
+     * @return ownersCount - The Amount of previous Owners 
      */
     function getCarPreviousOwnersCount(string _carVin) 
-    external
+    public
     view
     returns (uint)
     {
-        return carsByVin[_carVin].previousOwners.length;
+        return previousOwners[_carVin].length;
     }
     
 }
