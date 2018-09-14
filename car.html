@@ -114,7 +114,7 @@
 	var popCanvas = document.getElementById("popChart");
 	var popCanvas = document.getElementById("popChart").getContext("2d");
 
-	var barChart = new Chart(popCanvas, {
+	var mileageChart = new Chart(popCanvas, {
 	  type: 'line',
 	  data: {
 	    labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"],
@@ -139,6 +139,25 @@
 
 	  }
 	});
+
+	function addData(){
+		let labels = ["2019"];
+		let data = [25000];
+
+		mileageChart.data.labels.push(labels)
+		mileageChart.data.datasets.forEach((dataset) => {
+        	dataset.data.push(data);
+    	});
+
+    	$("#mileage").text('125 005');
+    	mileageChart.update();
+	}
+
+	$('body').keypress(() => {
+		addData()
+	})
 	</script>
+
+
 </body>
 </html>
