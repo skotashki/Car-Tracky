@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const path = require("path")
+const CarService = require('./Services/CarService');
 
 app.use(express.static(__dirname + '/css'))
 
@@ -9,6 +10,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/car/:vin', (req, res) => {
+	//TODO: PROVIDE REAL VIN HERE
+	CarService.searchCar("test");
 	res.sendFile(path.join(__dirname + '/car.html'))
 })
 
