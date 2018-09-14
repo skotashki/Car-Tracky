@@ -87,7 +87,6 @@ using SafeMath for uint;
     * @param deviceAddress address - The address of the device(car).
     * @param vin string - The car VIN.
     * @param imageHash string - A image of the Car. Beta: Stores string path to image. Idea to store IPFS hash.
-    * @param PreviousOwnersInfo[] previousOwners  - Stores information about all of the previous owners.
 	*/
 	struct Car {
 		address carOwner;
@@ -95,7 +94,6 @@ using SafeMath for uint;
 		string vin;
 		uint mileageCounter;
 		string imageHash;
-	    PreviousOwnersInfo[] previousOwners;
 	}
 	/**
 	 * Storing Device Address to Car. That way we store information about which device.
@@ -108,6 +106,11 @@ using SafeMath for uint;
 	 * @param  vin string - The key to the map is the Car Vin.
 	 */
 	mapping(string => Car) carsByVin;
+	/**
+	 * Storing Device Address to PreviousOwners. That way we store information which were the owners of the device.
+	 * @param  FirstParam address - Device Address
+	 */
+	mapping(string => PreviousOwnersInfo[]) previousOwners;
 
 	/**
 	 * To start using our system we need authority to register your car.
@@ -177,7 +180,7 @@ using SafeMath for uint;
 	                    address _deviceAddress,
 	                    uint _mileageCounter,
 	                    string _imageHash)
-    extarnal
+    external
     onlyRegistrator
     onlyNewCar(_deviceAddress) {
         Car memory newCar;
@@ -197,24 +200,23 @@ using SafeMath for uint;
      * @param  _newOwner address _newOwner    - the Address of the new Car Owner
      */
     function transferOwnership(address _carAddress, address _newOwner) 
-    extarnal
+    external
     onlyRegistrator {
-        addDetailsToPreviousOwner(_carAddress);
+        addDetailsToPreviousOwner(cars[_carAddress].vin);
         cars[_carAddress].carOwner = _newOwner;
         carsByVin[cars[_carAddress].vin].carOwner = _newOwner;
     }
     /**
      * Handles the buisness logic of setting up the Data for the previous owners.
-     * @param _carAddress address _carAddress - The address of the car
+     * @param _carVin string _carVin - The Vin of the car
      */
-    function addDetailsToPreviousOwner(address _carAddress)
+    function addDetailsToPreviousOwner(string _carVin)
     private {
         PreviousOwnersInfo memory previousOwner;
-        previousOwner.previousOwnerAddress = cars[_carAddress].carOwner;
-        previousOwner.mileageSnapshot = cars[_carAddress].mileageCounter;
+        previousOwner.previousOwnerAddress = carsByVin[_carVin].carOwner;
+        previousOwner.mileageSnapshot = carsByVin[_carVin].mileageCounter;
         previousOwner.timestamp = block.timestamp;
-        cars[_carAddress].previousOwners.push(previousOwner);
-        carsByVin[cars[_carAddress].vin].previousOwners.push(previousOwner);
+        previousOwners[_carVin].push(previousOwner);
     }
     
     /**
@@ -264,9 +266,9 @@ using SafeMath for uint;
             uint mileageSnapshot,
             uint timestamp)
     {
-        return (carsByVin[_carVin].previousOwners[_ownerIndex].previousOwnerAddress,
-                carsByVin[_carVin].previousOwners[_ownerIndex].mileageSnapshot,
-                carsByVin[_carVin].previousOwners[_ownerIndex].timestamp);
+        return (previousOwners[_carVin][_ownerIndex].previousOwnerAddress,
+                previousOwners[_carVin][_ownerIndex].mileageSnapshot,
+                previousOwners[_carVin][_ownerIndex].timestamp);
     }
     /**
      * Giving information of how many owners did the car had.
@@ -278,7 +280,7 @@ using SafeMath for uint;
     view
     returns (uint)
     {
-        return carsByVin[_carVin].previousOwners.length;
+        return previousOwners[_carVin].length;
     }
     
 }
