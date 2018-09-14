@@ -78,3 +78,10 @@ And for supplying voltage to both `Arduino Uno` and `ESP32`, we have connected t
 For power supply, we are using two 3.6V lithium ion batteries (https://uk.farnell.com/ansmann/1307-0000/li-ion-battery-3-6v-2600mah/dp/2723326).
 
 The final hardware component is a set of three LEDs. They are used for debugging purposes. Blinking upon establishing connection with WiFi, upon successful transmission of mileage data from the `Arduino Uno` to `ESP32` and upon successful publishing of a ethereum transaction with an invocation of `addMileage(uint)` with the received mileage data.
+
+## Contributors
+[Rosen Krumov] (https://github.com/rosenkrumov)
+[Ivan Abadzhiev] (https://github.com/ivanabadzhiev) (commits from him in this repo done by [Tendrik](https://github.com/tendrik))
+[Simeon Kotashki] (https://github.com/skotashki)
+[Nikolay Angelov] (https://github.com/nikolayangelov)
+[Preslav Mihaylov] (https://github.com/preslavmihaylov)
