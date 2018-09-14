@@ -26,14 +26,15 @@ long accumulated_mileage = 0;
 
 Web3 web3(&host, &path);
 unsigned long trackMillis = 0;
+unsigned long wifiLedTrackMillis = 0;
 
 void setup() {
     USE_SERIAL.begin(115200);
-    pinMode(35, OUTPUT);
+    pinMode(32, OUTPUT);
     pinMode(25, OUTPUT);
     
     digitalWrite(25, LOW);
-    digitalWrite(35, LOW);
+    digitalWrite(32, LOW);
 
     for(uint8_t t = 4; t > 0; t--) {
         USE_SERIAL.printf("[SETUP] WAIT %d...\n", t);
@@ -41,8 +42,9 @@ void setup() {
         delay(1000);
     }
 
-    WiFi.begin(ENV_SSID, ENV_WIFI_KEY);
+    WiFi.begin(ENV_SSID, ENV_WIFI_KEY);  
 
+    
     // attempt to connect to Wifi network:
     while (WiFi.status() != WL_CONNECTED) {
         Serial.print(".");
@@ -58,11 +60,20 @@ void setup() {
 }
 
 void loop() {
+  if (wifiLedTrackMillis == 0)
+  {
+    wifiLedTrackMillis = millis();
+  }
 
   unsigned long currentMillis = millis();
+  if (wifiLedTrackMillis != 0 && currentMillis - wifiLedTrackMillis > 5000)
+  {
+    digitalWrite(25, LOW);
+  }
+  
   if (trackMillis != 0 && (currentMillis - trackMillis) > 5000)
   {
-    digitalWrite(35, LOW);
+    digitalWrite(32, LOW);
     trackMillis = 0;
   }
   
@@ -101,7 +112,7 @@ void eth_send_example(long currentMileage) {
     string result = contract.SendTransaction(nonceVal, gasPriceVal, gasLimitVal, &toStr, &valueStr, &p);
     USE_SERIAL.println(result.c_str());
     
-    digitalWrite(35, HIGH);
+    digitalWrite(32, HIGH);
     trackMillis = millis();
 
 //    if(strstr(result, "error") != NULL) {

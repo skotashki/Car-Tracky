@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Your car</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/libraries/vuejs-dialog.min.css">
+	<link type="text/css" href="/css/car-styles.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		  <!-- Indicators -->
+		  <ol class="carousel-indicators">
+		    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		    <li data-target="#myCarousel" data-slide-to="1"></li>
+		    <li data-target="#myCarousel" data-slide-to="2"></li>
+		  </ol>
+
+		  <!-- Wrapper for slides -->
+		  <div class="carousel-inner">
+		    <div class="item active">
+		      <img src="/images/tesla-red.png">
+		    </div>
+
+		    <div class="item">
+		      <img src="/images/tesla-red.png">
+		    </div>
+
+		    <div class="item">
+		      <img src="/images/tesla-red.png">
+		    </div>
+		  </div>
+		</div>
+
+		<div class="row feature-box">
+			<div class="col-sm-6 left-feature">
+				<div class="box">
+					<span class="feature-text">Mileage</span><br>
+					<span id="mileage">125 000</span>KM
+				</div>
+			</div>
+			
+			<div class="col-sm-6">
+				<div class="box">
+					<span class="feature-text">Max Speed </span><br>
+					350 KM
+				</div>
+			</div>
+			<hr>
+		</div>
+
+		<div class="row">
+			<canvas id="popChart" width="600" height="200"></canvas>
+		</div>
+
+		<div class="row">
+			 <table class="table table-bordered">
+			    <thead>
+			      <tr>
+			      	<th>#</th>
+			        <th>Previous owner</th>
+			        <th>Mileage</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr>
+			      	<td>1</td>
+			        <td>Ivan</td>
+			        <td>30 000</td>
+			      </tr>
+			      <tr>
+			      	<td>2</td>
+			        <td>Simeon</td>
+			        <td>20 000</td>
+			      </tr>
+			      <tr>
+			      	<td>3</td>
+			        <td>George</td>
+			        <td>50 000</td>
+			      </tr>
+    			</tbody>
+  			</table>
+		</div>
+	</div>
+
+	<a href="#">
+		<i class="fas fa-dollar-sign fa-2x my-float"></i>
+	</a>
+
+ 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+ 	<script src="../libraries/web3.min.js"></script>
+  	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="/chart.js/dist/Chart.min.js"></script>
+
+	<script type="text/javascript">
+		$('.carousel').carousel();
+	</script>
+
+	<script type="text/javascript">
+	var popCanvas = jQuery("#popChart");
+	var popCanvas = document.getElementById("popChart");
+	var popCanvas = document.getElementById("popChart").getContext("2d");
+
+	var mileageChart = new Chart(popCanvas, {
+	  type: 'line',
+	  data: {
+	    labels: ["2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"],
+	    datasets: [{
+	      label: 'Mileage',
+	      data: [10000, 20000, 12000, 11000, 9000, 5000, 7000, 8000, 15000, 23000],
+	      steppedLine : true,
+	      backgroundColor: [
+	        'rgba(1, 162, 242, 0.6)',
+	        'rgba(54, 162, 235, 0.6)',
+	        'rgba(255, 206, 86, 0.6)',
+	        'rgba(75, 192, 192, 0.6)',
+	        'rgba(153, 102, 255, 0.6)',
+	        'rgba(255, 159, 64, 0.6)',
+	        'rgba(255, 99, 132, 0.6)',
+	        'rgba(54, 162, 235, 0.6)',
+	        'rgba(255, 206, 86, 0.6)',
+	        'rgba(75, 192, 192, 0.6)',
+	        'rgba(153, 102, 255, 0.6)'
+	      ]
+	    }],
+
+	  }
+	});
+
+	function addData(){
+		let labels = ["2019"];
+		let data = [25000];
+
+		mileageChart.data.labels.push(labels)
+		mileageChart.data.datasets.forEach( (dataset) => {
+        	dataset.data.push(data);
+    	});
+
+    	$("#mileage").text('125 005');
+    	mileageChart.update();
+	}
+
+	function registerEventWatcher(address,abi,vin){
+		var web3 = new Web3(new Web3.providers.HttpProvider("http://35.242.225.96:8545"))
+		var MyContract = web3.eth.contract(abi);
+		// Instantiate from an existing address:
+		var myContractInstance = MyContract.at(address);
+		var event = myContractInstance.MileageChange();
+		// watch for changes
+		event.watch(function(error, result){
+ 			if (!error)
+   			console.log(result);
+		});
+	}
+
+	$('body').keypress(() => {
+		addData()
+	})
+
+ 	let contractAbi = [
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "_amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "addMileage",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "name": "timestamp",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "name": "carVin",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "name": "mileage",
+                    "type": "uint256"
+                }
+            ],
+            "name": "MileageChange",
+            "type": "event"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "_carVin",
+                    "type": "string"
+                },
+                {
+                    "name": "_deviceAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "_mileageCounter",
+                    "type": "uint256"
+                },
+                {
+                    "name": "_imageHash",
+                    "type": "string"
+                }
+            ],
+            "name": "registerCar",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "_carAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "_newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "name": "_registrator",
+                    "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "name": "_carVin",
+                    "type": "string"
+                }
+            ],
+            "name": "getCarDetails",
+            "outputs": [
+                {
+                    "name": "carOwner",
+                    "type": "address"
+                },
+                {
+                    "name": "deviceAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "mileageCounter",
+                    "type": "uint256"
+                },
+                {
+                    "name": "imageHash",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "name": "_carVin",
+                    "type": "string"
+                },
+                {
+                    "name": "_ownerIndex",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getCarPreviousOwnersByIndex",
+            "outputs": [
+                {
+                    "name": "previousOwnerAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "mileageSnapshot",
+                    "type": "uint256"
+                },
+                {
+                    "name": "timestamp",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "name": "_carVin",
+                    "type": "string"
+                }
+            ],
+            "name": "getCarPreviousOwnersCount",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getMileage",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }
+    	];
+
+	$(document).ready( function() {
+  		registerEventWatcher("<%=contractAddress%>",contractAbi,"<%=vin%>")
+	});
+	</script>
+</body>
+</html>

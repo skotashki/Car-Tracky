@@ -1,67 +1,7 @@
 pragma solidity ^0.4.24;
-/**
- * @title SafeMath
- * @dev Math operations with safety checks that revert on error
- */
-library SafeMath {
 
-  /**
-  * @dev Multiplies two numbers, reverts on overflow.
-  */
-  function mul(uint256 a, uint256 b) internal pure returns (uint256) {
-    // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
-    // benefit is lost if 'b' is also tested.
-    // See: https://github.com/OpenZeppelin/openzeppelin-solidity/pull/522
-    if (a == 0) {
-      return 0;
-    }
+import "./SafeMath.sol";
 
-    uint256 c = a * b;
-    require(c / a == b);
-
-    return c;
-  }
-
-  /**
-  * @dev Integer division of two numbers truncating the quotient, reverts on division by zero.
-  */
-  function div(uint256 a, uint256 b) internal pure returns (uint256) {
-    require(b > 0); // Solidity only automatically asserts when dividing by 0
-    uint256 c = a / b;
-    // assert(a == b * c + a % b); // There is no case in which this doesn't hold
-
-    return c;
-  }
-
-  /**
-  * @dev Subtracts two numbers, reverts on overflow (i.e. if subtrahend is greater than minuend).
-  */
-  function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-    require(b <= a);
-    uint256 c = a - b;
-
-    return c;
-  }
-
-  /**
-  * @dev Adds two numbers, reverts on overflow.
-  */
-  function add(uint256 a, uint256 b) internal pure returns (uint256) {
-    uint256 c = a + b;
-    require(c >= a);
-
-    return c;
-  }
-
-  /**
-  * @dev Divides two numbers and returns the remainder (unsigned integer modulo),
-  * reverts when dividing by zero.
-  */
-  function mod(uint256 a, uint256 b) internal pure returns (uint256) {
-    require(b != 0);
-    return a % b;
-  }
-}
 /**
  * The Tracky contract that stores information about cars...
  */
@@ -80,6 +20,7 @@ using SafeMath for uint;
         uint256 timestamp;
         uint256 mileageSnapshot;
     }
+	
     /**
 	* Our main struct that hold the entire information about the car.
 	* @dev Used to track everything we need.
@@ -94,18 +35,23 @@ using SafeMath for uint;
 		string vin;
 		uint mileageCounter;
 		string imageHash;
+		uint year;
+		string brand;
 	}
+	
 	/**
 	 * Storing Device Address to Car. That way we store information about which device.
 	 * @param  FirstParam address - Device Address
 	 */
 	mapping(address => Car) cars;
+	
 	/**
 	 * We do simillar mapping for the car details. Here we mapped from string which is the 
 	 * device VIN. We currently need to do that to enable the search functionality.
 	 * @param  vin string - The key to the map is the Car Vin.
 	 */
 	mapping(string => Car) carsByVin;
+	
 	/**
 	 * Storing Device Address to PreviousOwners. That way we store information which were the owners of the device.
 	 * @param  FirstParam address - Device Address
@@ -118,6 +64,8 @@ using SafeMath for uint;
 	 * @param registrator address - Holding the address of the Registrator authority
 	 */
 	address private registrator;
+	
+	event MileageChange(uint timestamp, string carVin, uint mileage);
 	
 	/**
 	 * We need to provide who the Registrator is when initilizing the contract.
@@ -135,6 +83,7 @@ using SafeMath for uint;
 	    require(cars[msg.sender].deviceAddress == msg.sender);
 	    _;
 	}
+	
 	/**
 	 * This modifier is used to make sure that the requested car Exists.
 	 */
@@ -142,6 +91,7 @@ using SafeMath for uint;
 	    require(cars[msg.sender].carOwner != 0x0);
 	    _;
 	}
+	
 	/**
 	 * This modifier is used to make sure that the Sender of transaction is the Registrator
 	 */
@@ -149,6 +99,7 @@ using SafeMath for uint;
 	    require(msg.sender == registrator);
 	    _;
 	}
+	
 	/**
 	 * This modifier is used to make sure that the Car Doesn't Exist.
 	 */
@@ -156,6 +107,7 @@ using SafeMath for uint;
 	    require(cars[_carAddress].carOwner == 0x0);
 	    _;
 	}
+	
 	/**
 	 * Adding Mileage to the device. This is called by the Device it self.
 	 * @dev - We have to modifiers. onlyDevice() and existingCar()
@@ -166,17 +118,22 @@ using SafeMath for uint;
 	onlyDevice()
 	existingCar() {
 	    cars[msg.sender].mileageCounter = cars[msg.sender].mileageCounter.add(_amount);
+	    emit MileageChange(block.timestamp, cars[msg.sender].vin, cars[msg.sender].mileageCounter);
 	}
 	
 	/**
 	 * Used by the Registrator to register the car.
 	 * @dev - We have one modifier onlyNewCar(_deviceAddress) to check if the car is new
 	 * @param  _carVin string  _carVin - Car VIN.
+	 * @return _year uint - The Car year.
+     * @return _brand string- The Brand of the car.
 	 * @param  _deviceAddress address _deviceAddress - The Device address
 	 * @param  _mileageCounter uint    _mileageCounter - Initial mileage Counter.
 	 * @param  _imageHash string  _imageHash   - Beta: Path to the image. Production: IPFS Image hash
 	 */
 	function registerCar(string _carVin, 
+	                    uint _year,
+	                    string _brand,
 	                    address _deviceAddress,
 	                    uint _mileageCounter,
 	                    string _imageHash)
@@ -189,9 +146,12 @@ using SafeMath for uint;
         newCar.vin = _carVin;
         newCar.mileageCounter = _mileageCounter;
         newCar.imageHash = _imageHash;
+        newCar.year = _year;
+        newCar.brand = _brand;
         cars[_deviceAddress] = newCar;
         carsByVin[_carVin] = newCar;
     }
+	
     /**
      * Used to transfer the Onwership of the car. If the car is sold
      * @dev - Here we call the private method addDetailsToPreviousOwner(_carAddress)
@@ -206,6 +166,7 @@ using SafeMath for uint;
         cars[_carAddress].carOwner = _newOwner;
         carsByVin[cars[_carAddress].vin].carOwner = _newOwner;
     }
+	
     /**
      * Handles the buisness logic of setting up the Data for the previous owners.
      * @param _carVin string _carVin - The Vin of the car
@@ -229,10 +190,13 @@ using SafeMath for uint;
     returns (uint) {
         return cars[msg.sender].mileageCounter;
     }
+	
     /**
      * Returns the Details about the Car
      * @param  _carVin string _carVin - The Vin of the Car to get the information
      * @return carOwner  address- The current Owner of the Car.
+     * @return year uint- The Car year.
+     * @return brand string- The Brand of the car.
      * @return deviceAddress address - The Address of the Device.
      * @return mileageCounter uint - The Mileage information about the Car.
      * @return imageHash string - The Image Path.
@@ -241,16 +205,21 @@ using SafeMath for uint;
     public
     view
     returns (address carOwner, 
+            uint year,
+            string brand,
             address deviceAddress,
 	        uint mileageCounter,
 	        string imageHash)
     {
         Car memory currentCar = carsByVin[_carVin];
         return (currentCar.carOwner,
+                currentCar.year,
+                currentCar.brand,
                 currentCar.deviceAddress,
                 currentCar.mileageCounter,
                 currentCar.imageHash);
     }
+	
     /**
      * Getting the information about previous Owners of a Car.
      * @param  _carVin string   _carVin- The Car Vin.
@@ -270,6 +239,7 @@ using SafeMath for uint;
                 previousOwners[_carVin][_ownerIndex].mileageSnapshot,
                 previousOwners[_carVin][_ownerIndex].timestamp);
     }
+	
     /**
      * Giving information of how many owners did the car had.
      * @param  _carVin string _carVin  - The Car Vin

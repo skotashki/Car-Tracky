@@ -19,9 +19,13 @@
   },
   "homepage": "https://github.com/skotashki/RidersOnTheChain#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "chart.js": "^2.7.2",
+    "ejs": "^2.6.1",
     "ethers": "^3.0.27",
     "express": "^4.16.3",
+    "nodemon": "^1.18.4",
+    "toastr": "^2.1.4",
     "web3": "^1.0.0-beta.36"
   }
 }

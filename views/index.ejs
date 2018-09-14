@@ -5,7 +5,7 @@
   <link href="https://fonts.googleapis.com/css?family=Lato:400" rel="stylesheet"> 
   <link rel="stylesheet" type="text/css" href="css/car_search.css">
   <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <link href="node_modules/toastr/build/toastr.css" rel="stylesheet" type="text/css" />
+  <link href="toastr/build/toastr.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <div class="container">
@@ -24,11 +24,13 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="node_modules/toastr/build/toastr.min.js"></script>
+<script src="/toastr/build/toastr.min.js"></script>
 <script type="text/javascript">
 $(".searchButton").on("click", () => {
-  if(validVinFormat($('.searchTerm').val())){
+  let vin = $('.searchTerm').val();
+  if(validVinFormat(vin)){
     console.log('redirect to car.html');
+    window.location.href = "/car/" + vin;
   } else {
     showError();
   }

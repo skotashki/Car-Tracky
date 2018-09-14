@@ -1,27 +1,9 @@
-function getContractOwner() {
-    let ownerAddress = "0x465c88a757c8fc52704242fa7bbffbb78942d210";
-    return ownerAddress;
-}
 function getContractAddress() {
-    let address = "0xde96194e06f498b779cb1cf16dee340ba58186a1";
+    let address = "0xb726a4d48bbd1ea0b040d6038142a60a6d89e63c";
     return address;
 }
 function getContractABI() {
     let abi = [
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "getMileage",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
         {
             "constant": false,
             "inputs": [
@@ -37,41 +19,26 @@ function getContractABI() {
             "type": "function"
         },
         {
-            "constant": true,
+            "anonymous": false,
             "inputs": [
                 {
-                    "name": "_carVin",
-                    "type": "string"
-                }
-            ],
-            "name": "getCarPreviousOwnersCount",
-            "outputs": [
+                    "indexed": false,
+                    "name": "timestamp",
+                    "type": "uint256"
+                },
                 {
-                    "name": "",
+                    "indexed": false,
+                    "name": "carVin",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "name": "mileage",
                     "type": "uint256"
                 }
             ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "name": "_carAddress",
-                    "type": "address"
-                },
-                {
-                    "name": "_newOwner",
-                    "type": "address"
-                }
-            ],
-            "name": "transferOwnership",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
+            "name": "MileageChange",
+            "type": "event"
         },
         {
             "constant": false,
@@ -98,6 +65,35 @@ function getContractABI() {
             "payable": false,
             "stateMutability": "nonpayable",
             "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "_carAddress",
+                    "type": "address"
+                },
+                {
+                    "name": "_newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "name": "_registrator",
+                    "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
         },
         {
             "constant": true,
@@ -162,22 +158,44 @@ function getContractABI() {
             "type": "function"
         },
         {
+            "constant": true,
             "inputs": [
                 {
-                    "name": "_registrator",
-                    "type": "address"
+                    "name": "_carVin",
+                    "type": "string"
+                }
+            ],
+            "name": "getCarPreviousOwnersCount",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256"
                 }
             ],
             "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "constructor"
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getMileage",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
         }
     ];
     return abi;
 }
 
 module.exports = {
-    getContractOwner,
+    // getContractOwner,
     getContractABI,
     getContractAddress
 };
