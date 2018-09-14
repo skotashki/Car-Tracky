@@ -80,8 +80,8 @@ For power supply, we are using two 3.6V [lithium ion batteries](https://uk.farne
 The final hardware component is a set of three LEDs. They are used for debugging purposes. Blinking upon establishing connection with WiFi, upon successful transmission of mileage data from the `Arduino Uno` to `ESP32` and upon successful publishing of a ethereum transaction with an invocation of `addMileage(uint)` with the received mileage data.
 
 ## Contributors
-[Rosen Krumov](https://github.com/rosenkrumov) (Arduino & DevOps)
+[Rosen Krumov](https://github.com/rosenkrumov) (Arduino & DevOps)  
 [Ivan Abadzhiev](https://github.com/ivanabadzhiev) (JS Front-end) (commits from him in this repo done by [Tendrik](https://github.com/tendrik))  
-[Simeon Kotashki](https://github.com/skotashki) (JS Front-end)
-[Nikolay Angelov](https://github.com/nikolayangelov) (Solidity Smart Contract)
-[Preslav Mihaylov](https://github.com/preslavmihaylov) (Hardware & Arduino)
+[Simeon Kotashki](https://github.com/skotashki) (JS Front-end)  
+[Nikolay Angelov](https://github.com/nikolayangelov) (Solidity Smart Contract)  
+[Preslav Mihaylov](https://github.com/preslavmihaylov) (Hardware & Arduino)  
