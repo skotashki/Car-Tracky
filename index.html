@@ -2,12 +2,17 @@
 <html>
 <head>
   <title></title>
+  <link href="https://fonts.googleapis.com/css?family=Lato:400" rel="stylesheet"> 
   <link rel="stylesheet" type="text/css" href="css/car_search.css">
   <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="node_modules/toastr/build/toastr.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <div class="container">
     <img src="images/logo.png">
+  </div>
+  <div class="slogan"> 
+    <p id="sloganText"></p>
   </div>
 <div class="wrap">
    <div class="search">
@@ -18,14 +23,69 @@
    </div>
 </div>
 
-<script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="node_modules/toastr/build/toastr.min.js"></script>
 <script type="text/javascript">
 $(".searchButton").on("click", () => {
-  console.log("redirect to car view");
+  if(validVinFormat($('.searchTerm').val())){
+    console.log('redirect to car.html');
+  } else {
+    showError();
+  }
+
 })
+</script>
+<script>
+var i = 0;
+var txt = 'Every car has a story . . .';
+var speed = 100;
+
+function typeWriter() {
+  if (i < txt.length) {
+    document.getElementById("sloganText").innerHTML += txt.charAt(i);
+    i++;
+    setTimeout(typeWriter, speed);
+  }
+}
+
+function setToasterSettings(){
+  toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "200",
+  "hideDuration": "1000",
+  "timeOut": "2000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
+}
+
+function showError(){
+toastr.error('Please enter a valid VIN');
+}
+
+function validVinFormat(vin){
+  var vinFormat = /^(?<wmi>[A-HJ-NPR-Z\d]{3})(?<vds>[A-HJ-NPR-Z\d]{5})(?<check>[\dX])(?<vis>(?<year>[A-HJ-NPR-Z\d])(?<plant>[A-HJ-NPR-Z\d])(?<seq>[A-HJ-NPR-Z\d]{6}))$/;
+  if (vinFormat.test(vin)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+$(document).ready( function() {
+  typeWriter();
+  setToasterSettings();
+});
+
 </script>
 </body>
 </html>

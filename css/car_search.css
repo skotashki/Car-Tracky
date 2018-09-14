@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 body{
-  background: #f2f2f2;
+  background: #e6f7ff;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -13,25 +13,27 @@ body{
 .searchTerm {
   float: left;
   width: 100%;
-  border: 3px solid #00B4CC;
+  border: 5px solid #01A9F2;
   padding: 5px;
   height: 40px;
   border-radius: 5px;
   outline: none;
-  color: #9DBFAF;
+  color: #000000;
+  font-size: 25px;
+  text-transform: uppercase;
 }
 
-.searchTerm:focus{
-  color: #00B4CC;
+.searchTerm::placeholder{
+text-transform: none;
 }
 
 .searchButton {
   position: absolute;  
   right: -50px;
-  width: 40px;
-  height: 56px;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
+  width: 50px;
+  height: 60px;
+  border: 1px solid #01A9F2;
+  background: #01A9F2;
   text-align: center;
   color: #fff;
   border-radius: 5px;
@@ -41,8 +43,8 @@ body{
 
 /*Resize the wrap to see the search bar change!*/
 .wrap {
-  width: 30%;
-  position: absolute;
+  width: 50%;
+  position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -51,4 +53,15 @@ body{
 .container img {
   display: block;
   margin: 0 auto;
+}
+
+.slogan {
+  height: 130px;
+}
+
+#sloganText {
+  color: #81C000;
+  font-size: 40px;
+  text-align: center;
+  font-family: 'Lato', sans-serif;
 }
