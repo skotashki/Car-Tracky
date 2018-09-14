@@ -150,11 +150,11 @@
 	}
 
 	function registerEventWatcher(address,abi,vin){
-		var web3 = new Web3('http://35.242.225.96:8545')
+		var web3 = new Web3(new Web3.providers.HttpProvider("http://35.242.225.96:8545"))
 		var MyContract = web3.eth.contract(abi);
 		// Instantiate from an existing address:
 		var myContractInstance = MyContract.at(address);
-		var event = myContractInstance.allEvents();
+		var event = myContractInstance.MileageChange();
 		// watch for changes
 		event.watch(function(error, result){
  			if (!error)
