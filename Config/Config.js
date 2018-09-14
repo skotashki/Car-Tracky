@@ -1,7 +1,7 @@
 let Config = (() => {
     // Write the Address of the Contract
     function getContractAddress() {
-        return "0xde96194e06f498b779cb1cf16dee340ba58186a1";
+        return "0xf1589253ad13f4fef808c9f57c8e78a393ac7e05";
     }
     // Write the Address of the Owner. We save calls to the contract
     function getContractOwner() {
@@ -9,20 +9,6 @@ let Config = (() => {
     }
     function getContractABI() {
         let abi = [
-            {
-                "constant": true,
-                "inputs": [],
-                "name": "getMileage",
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
             {
                 "constant": false,
                 "inputs": [
@@ -38,41 +24,26 @@ let Config = (() => {
                 "type": "function"
             },
             {
-                "constant": true,
+                "anonymous": false,
                 "inputs": [
                     {
-                        "name": "_carVin",
-                        "type": "string"
-                    }
-                ],
-                "name": "getCarPreviousOwnersCount",
-                "outputs": [
+                        "indexed": false,
+                        "name": "timestamp",
+                        "type": "uint256"
+                    },
                     {
-                        "name": "",
+                        "indexed": false,
+                        "name": "carVin",
+                        "type": "string"
+                    },
+                    {
+                        "indexed": false,
+                        "name": "mileage",
                         "type": "uint256"
                     }
                 ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "constant": false,
-                "inputs": [
-                    {
-                        "name": "_carAddress",
-                        "type": "address"
-                    },
-                    {
-                        "name": "_newOwner",
-                        "type": "address"
-                    }
-                ],
-                "name": "transferOwnership",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
+                "name": "MileageChange",
+                "type": "event"
             },
             {
                 "constant": false,
@@ -101,6 +72,35 @@ let Config = (() => {
                 "type": "function"
             },
             {
+                "constant": false,
+                "inputs": [
+                    {
+                        "name": "_carAddress",
+                        "type": "address"
+                    },
+                    {
+                        "name": "_newOwner",
+                        "type": "address"
+                    }
+                ],
+                "name": "transferOwnership",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "name": "_registrator",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
                 "constant": true,
                 "inputs": [
                     {
@@ -113,6 +113,14 @@ let Config = (() => {
                     {
                         "name": "carOwner",
                         "type": "address"
+                    },
+                    {
+                        "name": "year",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "brand",
+                        "type": "string"
                     },
                     {
                         "name": "deviceAddress",
@@ -163,15 +171,37 @@ let Config = (() => {
                 "type": "function"
             },
             {
+                "constant": true,
                 "inputs": [
                     {
-                        "name": "_registrator",
-                        "type": "address"
+                        "name": "_carVin",
+                        "type": "string"
+                    }
+                ],
+                "name": "getCarPreviousOwnersCount",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
                     }
                 ],
                 "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "constructor"
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getMileage",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
             }
         ];
         return abi;

@@ -34,7 +34,16 @@ app.get('/', (req, res) => {
 app.get('/car/:vin', async (req, res) => {
 	let vin = req.params.vin;
 
-	var details = await CarContract.methods.getCarDetails(vin).call()
+	var details = CarContract.methods.getCarDetails(vin)
+		.call({
+			gasLimit: 250000, value:0, gas: 500000
+		}, function (err, result) {
+			//console.log(err);
+			console.log(result);
+		}
+		).catch(function (error) {
+			///console.log(error);
+        });
 
 	let currentCarOwner = details[0];
 	let deviceAddress = details[1];
@@ -44,8 +53,8 @@ app.get('/car/:vin', async (req, res) => {
 	let previousOwners = await CarContract.methods.getCarPreviousOwnersCount(vin).call()
 
 	for (var i = 0; i < previousOwners; i++) {
-		let owner = await CarContract.methods.getCarPreviousOwnersByIndex(vin,i)
-	}	console.log(owner)
+        let owner = await CarContract.methods.getCarPreviousOwnersByIndex(vin, i)
+    }
 	
 	res.render('car', {
 		vin : vin,

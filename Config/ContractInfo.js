@@ -1,5 +1,5 @@
 function getContractAddress() {
-    let address = "0xb726a4d48bbd1ea0b040d6038142a60a6d89e63c";
+    let address = "0xf1589253ad13f4fef808c9f57c8e78a393ac7e05";
     return address;
 }
 function getContractABI() {
@@ -108,6 +108,14 @@ function getContractABI() {
                 {
                     "name": "carOwner",
                     "type": "address"
+                },
+                {
+                    "name": "year",
+                    "type": "uint256"
+                },
+                {
+                    "name": "brand",
+                    "type": "string"
                 },
                 {
                     "name": "deviceAddress",
