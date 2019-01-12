@@ -2,6 +2,10 @@
 
 #include <OBD2UART.h>
 
+// IMPORTANT NOTE:
+// OBD2 RX/TX pins are NOT the standard UART pins on the esp32 board (rx/tx), 
+// but are pin 16 (RX) and pin 17 (TX) instead.
+
 #define LED_OBD_INIT 18
 #define LED_OBD_CONNECTED 15
 #define LED_OBD_CONNECTING 2
